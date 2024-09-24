@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uefa Cat League $UCL</title>
+    <!-- Link to Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Set the football field background */
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        #football-field {
+            background: url('field.jpg') no-repeat center center fixed;
+            background-size: cover;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Cats and ball styling */
+        #cat-left, #cat-right, #ball {
+            position: absolute;
+        }
+
+        #cat-left {
+            bottom: 20%;
+            left: 5%;
+            width: 300px; /* Bigger size */
+        }
+
+        #cat-right {
+            bottom: 20%;
+            right: 5%;
+            width: 300px; /* Bigger size */
+        }
+
+        #ball {
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            animation: bounce 1s infinite; /* Add bouncing animation */
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translate(-50%, 0); /* No vertical movement */
+            }
+            40% {
+                transform: translate(-50%, -10px); /* Move up */
+            }
+            60% {
+                transform: translate(-50%, -5px); /* Move down */
+            }
+        }
+
+        /* Title and subtitle */
+        #title-screen {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: white;
+            font-family: 'Oswald', sans-serif; /* Using Oswald font */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); /* Text shadow for effect */
+        }
+
+        #title-screen h1 {
+            font-size: 60px; /* Increased size */
+            margin: 0;
+            animation: fadeIn 1s ease; /* Fade-in effect */
+        }
+
+        #title-screen h2 {
+            font-size: 30px; /* Increased size */
+            margin: 0;
+            animation: fadeIn 1s ease; /* Fade-in effect */
+            animation-delay: 0.5s; /* Delay for subtitle */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        #title-screen.fade-out {
+            animation: fadeOut 2s forwards;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; display: none; }
+        }
+
+        /* Social media icons */
+.social-icons {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.social-icons img {
+    width: 40px;
+    height: 40px;
+    transition: transform 0.3s ease;
+}
+
+.social-icons img:hover {
+    transform: scale(1.2);
+}
+    </style>
+</head>
+<body>
+
+    <div id="football-field">
+        <!-- Title and subtitle -->
+        <div id="title-screen">
+            <h1>Uefa Cat League $UCL</h1>
+            <h2>Press [Enter] to start</h2>
+            <h3>"CA HERE ONCE LIVE"</h4>
+        </div>
+
+        <!-- Left cat -->
+        <img src="left.png" id="cat-left" alt="Cat on the left">
+        
+        <!-- Right cat -->
+        <img src="right.png" id="cat-right" alt="Cat on the right">
+
+        <!-- Football -->
+        <img src="ball.png" id="ball" alt="Football">
+    </div>
+
+    <!-- Social media icons -->
+    <div class="social-icons">
+        <a href="https://x.com/cat_league_" target="_blank">
+            <img src="twitter.png" alt="Twitter">
+        </a>
+        <a href="https://t.me/+9oHTrOQl8JY4MDA0" target="_blank">
+            <img src="tgg.jpg" alt="Telegram">
+        </a>
+    </div>
+
+    <script>
+    let gameStarted = false;
+
+    // Get elements
+    const ball = document.getElementById('ball');
+    const leftCat = document.getElementById('cat-left');
+    const rightCat = document.getElementById('cat-right');
+    const titleScreen = document.getElementById('title-screen');
+
+    // Position variables for cats
+    let leftCatPos = { x: 5, y: 70 }; // Left cat starts on the left
+    let rightCatPos = { x: 90, y: 70 }; // Right cat starts on the right
+
+    // Movement states for both cats
+    let leftCatMovement = { up: false, down: false, left: false, right: false };
+    let rightCatMovement = { up: false, down: false, left: false, right: false };
+
+    // Function to start the game
+    document.addEventListener('keydown', function(e) {
+        if ((e.key === 'Enter' || e.code === 'Space') && !gameStarted) {
+            titleScreen.classList.add('fade-out');
+            gameStarted = true;
+            startGame();
+        }
+    });
+
+    function startGame() {
+        // Update cat positions
+        window.requestAnimationFrame(updateGame);
+
+        // Handle keyboard input for movement
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'w') leftCatMovement.up = true;
+            if (e.key === 's') leftCatMovement.down = true;
+            if (e.key === 'a') leftCatMovement.left = true;
+            if (e.key === 'd') leftCatMovement.right = true;
+
+            if (e.key === 'ArrowUp') rightCatMovement.up = true;
+            if (e.key === 'ArrowDown') rightCatMovement.down = true;
+            if (e.key === 'ArrowLeft') rightCatMovement.left = true;
+            if (e.key === 'ArrowRight') rightCatMovement.right = true;
+        });
+
+        document.addEventListener('keyup', function(e) {
+            if (e.key === 'w') leftCatMovement.up = false;
+            if (e.key === 's') leftCatMovement.down = false;
+            if (e.key === 'a') leftCatMovement.left = false;
+            if (e.key === 'd') leftCatMovement.right = false;
+
+            if (e.key === 'ArrowUp') rightCatMovement.up = false;
+            if (e.key === 'ArrowDown') rightCatMovement.down = false;
+            if (e.key === 'ArrowLeft') rightCatMovement.left = false;
+            if (e.key === 'ArrowRight') rightCatMovement.right = false;
+        });
+    }
+
+    // Update game state
+    function updateGame() {
+        // Update cat positions based on movement
+        if (leftCatMovement.up) leftCatPos.y = Math.max(0, leftCatPos.y - 1);
+        if (leftCatMovement.down) leftCatPos.y = Math.min(90, leftCatPos.y + 1);
+        if (leftCatMovement.left) leftCatPos.x = Math.max(0, leftCatPos.x - 1);
+        if (leftCatMovement.right) leftCatPos.x = Math.min(45, leftCatPos.x + 1);
+
+        if (rightCatMovement.up) rightCatPos.y = Math.max(0, rightCatPos.y - 1);
+        if (rightCatMovement.down) rightCatPos.y = Math.min(90, rightCatPos.y + 1);
+        if (rightCatMovement.left) rightCatPos.x = Math.max(55, rightCatPos.x - 1);
+        if (rightCatMovement.right) rightCatPos.x = Math.min(100, rightCatPos.x + 1);
+
+        // Update positions of the cats on the screen
+        leftCat.style.left = leftCatPos.x + 'vw';
+        leftCat.style.top = leftCatPos.y + 'vh';
+
+        rightCat.style.left = rightCatPos.x + 'vw';
+        rightCat.style.top = rightCatPos.y + 'vh';
+
+        // Continue game loop
+        window.requestAnimationFrame(updateGame);
+    }
+
+    </script>
+    
+
+</body>
+</html>
